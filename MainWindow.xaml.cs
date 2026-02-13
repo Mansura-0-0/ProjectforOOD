@@ -30,15 +30,15 @@ namespace Project
             RefreshTaskList();
         }
 
-        // When a task is clicked
+        // When a task is clickked
         private void TaskListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Clear previous details
+            // Clear previouos details
             taskdetail.Children.Clear();
             // Show details of selected task
             if (taskListBox.SelectedItem is TaskItem task)
             {
-                // Display task details in the task list pannel
+                // Display task detiails in the task list pannel
                 tasklist.Children.Add(new TextBlock
                 {
                     Text =
