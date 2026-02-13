@@ -60,7 +60,7 @@ namespace Project
 
         private void addbtn_Click(object sender, RoutedEventArgs e)
         {
-            //this checks if there are already 5 tasks that are not completed, if so it will show a message box and return
+            //this checks if there are already 5 tasks that are not completted, if so it will show a message box and return
             if (tasks.Count(t => !t.IsCompleted) >= MaxTasks)
             {
                 MessageBox.Show(
