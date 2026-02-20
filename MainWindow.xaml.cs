@@ -11,23 +11,41 @@ namespace Project
         private List<TaskItem> tasks = new List<TaskItem>();
         private const int MaxTasks = 5;
         private ListBox taskListBox;
+        private StackPanel taskdetail;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            prioritybx.ItemsSource = new List<string> { "Low", "Medium", "High" };
-
-            // ONE ListBox for Task List
-            taskListBox = new ListBox
+            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
-                Margin = new Thickness(5)
-            };
-            //this shows the details of the task when clicked
-            taskListBox.SelectionChanged += TaskListBox_SelectionChanged;
-            tasklist.Children.Add(taskListBox);
+                // Only add dynamic tasks at runtime
+                // Example:
+                // tasklist.Children.Add(new TaskControl(...));
 
-            RefreshTaskList();
+
+                prioritybx.ItemsSource = new List<string> { "Low", "Medium", "High" };
+
+                // Initialize taskdetail StackPanel
+                taskdetail = new StackPanel
+                {
+                    Margin = new Thickness(5)
+                };
+                // Add taskdetail to your layout (for example, to a parent panel)
+                // Replace 'parentPanel' with the actual parent container in your XAML
+                tasklist.Children.Add(taskdetail);
+
+
+                // ONE ListBox for Task List
+                taskListBox = new ListBox
+                {
+                    Margin = new Thickness(5)
+                };
+                //this shows the details of the task when clicked
+                taskListBox.SelectionChanged += TaskListBox_SelectionChanged;
+                tasklist.Children.Add(taskListBox);
+
+                RefreshTaskList();
+            }
         }
 
         // When a task is clickked
@@ -60,7 +78,7 @@ namespace Project
 
         private void addbtn_Click(object sender, RoutedEventArgs e)
         {
-            //this checks if there are already 5 tasks that are not completed, if so it will show a message box and return
+            //this checks if there are already 5 tasks that are not completted, if so it will show a message box and return
             if (tasks.Count(t => !t.IsCompleted) >= MaxTasks)
             {
                 MessageBox.Show(
