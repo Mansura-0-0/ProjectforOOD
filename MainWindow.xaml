@@ -1,207 +1,74 @@
-﻿<Window x:Class="Project.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Project" mc:Ignorable="d" Title="MainWindow" Height="438" Width="844">
-	<!-- ✅ RESOURCES MUST BE HERE -->
-	<Window.Resources>
-		<!-- Pink Palette -->
-		<SolidColorBrush x:Key="PrimaryColor" Color="#E91E63"/>
-		<!-- Main Pink -->
-		<SolidColorBrush x:Key="LightPink" Color="#FCE4EC"/>
-		<!-- Background -->
-		<SolidColorBrush x:Key="CardColor" Color="#FFFFFF"/>
-		<!-- Cards -->
-		<SolidColorBrush x:Key="SoftAccent" Color="#F8BBD0"/>
-		<!-- Soft Border -->
-		<SolidColorBrush x:Key="HoverPink" Color="#D81B60"/>
-		<!-- Hover -->
-		<!-- Modern Button Style -->
-		<Style TargetType="Button">
-			<Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-			<Setter Property="Foreground" Value="White"/>
-			<Setter Property="FontWeight" Value="SemiBold"/>
-			<Setter Property="Padding" Value="8"/>
-			<Setter Property="Margin" Value="5"/>
-			<Setter Property="BorderThickness" Value="0"/>
-			<Setter Property="Cursor" Value="Hand"/>
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="Button">
-						<Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
-							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-						</Border>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-			<Style.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="Background" Value="{StaticResource HoverPink}"/>
-				</Trigger>
-			</Style.Triggers>
-		</Style>
-		<!-- Rounded TextBox -->
-		<Style TargetType="TextBox">
-			<Setter Property="Padding" Value="6"/>
-			<Setter Property="Margin" Value="0 5 0 10"/>
-			<Setter Property="BorderBrush" Value="{StaticResource SoftAccent}"/>
-			<Setter Property="BorderThickness" Value="2"/>
-		</Style>
-	</Window.Resources>
+﻿<Window x:Class="Project.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Task Guru" Height="550" Width="900" ResizeMode="CanResize">
 
-	<Grid Background="{StaticResource LightPink}">
+	<Grid Background="#FCE4EC" Margin="10">
 
-		<!-- 3 Rows: Header | Content | Progress -->
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
+			<!-- Header -->
+			<RowDefinition/>
+			<!-- Main Content -->
+			<RowDefinition Height="Auto" MinHeight="55.96"/>
+			<!-- Progress -->
 		</Grid.RowDefinitions>
 
-		<!-- 2 Columns -->
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="2*"/>
 			<ColumnDefinition Width="3*"/>
 		</Grid.ColumnDefinitions>
 
-		<!-- 💖 HEADER (Top Left) -->
-		<Border Grid.Row="0"
-				Background="#E91E63"
-				Padding="20"
-				 Margin="0,0,59,10"
-				>
-
+		<!-- Header -->
+		<Border Grid.Row="0" Background="#E91E63" Padding="20" CornerRadius="0,0,15,15" Margin="23,0,109,66">
 			<StackPanel>
-
-				<TextBlock Text="✨ Task Guru ✨"
-						   FontSize="30"
-						   FontWeight="Bold"
-						   Foreground="White" Height="39" Width="237"/>
-
-				<TextBlock Text="Get Your Sh*t Together"
-						   FontSize="14"
-						   Foreground="#FCE4EC"
-						   Margin="0,5,0,0"/>
+				<TextBlock Text="✨ Task Guru ✨" FontSize="20" FontWeight="Bold" Foreground="White"/>
+				<TextBlock Text="Get Your Sh*t Together" FontSize="14" Foreground="#FCE4EC"/>
 			</StackPanel>
-
 		</Border>
 
-		<!-- LEFT PANEL -->
-		<Border Grid.Row="1"
-				Grid.Column="0"
-				Margin="20"
-				CornerRadius="20"
-				Background="White"
-				Padding="20">
+		<!-- Left Panel -->
+		<Border Grid.Column="0" Margin="10,104,0,41" Background="White" CornerRadius="15" Padding="15" Grid.RowSpan="3">
+			<StackPanel Margin="0,0,-5,-5">
+				<TextBlock Text="Task List" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+				<TextBox x:Name="searchbx" Margin="0,0,0,10" Height="28" VerticalContentAlignment="Center" Padding="5"
+                         Foreground="Gray" Text="Search tasks..." GotFocus="Searchbx_GotFocus" LostFocus="Searchbx_LostFocus"/>
+				<ListView x:Name="taskListView" Height="200" SelectionChanged="taskListView_SelectionChanged" Margin="0,0,0,10" Width="211"/>
 
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="Auto"/>
-				</Grid.RowDefinitions>
-
-				<TextBlock Grid.Row="0"
-						   Text="Task List"
-						   FontSize="20"
-						   FontWeight="Bold"
-						   Margin="0 0 0 15"/>
-
-				<TextBox Grid.Row="1"
-						 x:Name="searchbx"/>
-
-				<ScrollViewer Grid.Row="2"
-							  Margin="0,10,0,10">
-					<StackPanel x:Name="tasklist"
-								Background="#FCE4EC"/>
-				</ScrollViewer>
-
-				<StackPanel Grid.Row="3"
-							Orientation="Horizontal"
-							HorizontalAlignment="Center">
-
-					<Button x:Name="alltaskbtn"
-							Content="All Tasks"
-							Click="alltaskbtn_Click"/>
-
-					<Button x:Name="donebtn"
-							Content="Done"
-							Click="donebtn_Click"/>
-
-					<Button x:Name="deletebtn"
-							Content="Delete"
-							Click="deletebtn_Click"/>
+				<!-- Buttons with spacing -->
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" >
+					<Button x:Name="alltaskbtn" Content="All Tasks" Width="80" Margin="5,0" Click="alltaskbtn_Click" Background="#E91E63" Foreground="White"/>
+					<Button x:Name="donebtn" Content="Done" Width="80" Margin="5,0" Click="donebtn_Click" Background="#E91E63" Foreground="White"/>
+					<Button x:Name="deletebtn" Content="Delete" Width="80" Margin="5,0" Click="deletebtn_Click" Background="#E91E63" Foreground="White"/>
 				</StackPanel>
-			</Grid>
+			</StackPanel>
 		</Border>
 
-		<!-- RIGHT PANEL -->
-		<Border
-				Grid.Column="1"
-				Margin="0,10,27,10"
-				CornerRadius="20"
-				Background="White"
-				Padding="25" Grid.RowSpan="3">
+		<!-- Right Panel -->
+		<Border Grid.Column="1" Background="White" CornerRadius="15" Padding="20" Margin="10,10,10,28" Grid.RowSpan="3">
+			<StackPanel>
+				<TextBlock Text="Add Task" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+				<TextBlock Text="Title"/>
+				<TextBox x:Name="titlebx" Margin="0,0,0,10" Height="28" Padding="5"/>
+				<TextBlock Text="Description"/>
+				<TextBox x:Name="descbx" AcceptsReturn="True" TextWrapping="Wrap" Height="80" Margin="0,0,0,10" Padding="5"/>
+				<TextBlock Text="Due Date" Height="27"/>
+				<DatePicker x:Name="datebx" Margin="0,0,0,10"/>
+				<TextBlock Text="Priority" Height="26"/>
+				<ComboBox x:Name="prioritybx" Margin="0,0,0,15" Height="36"/>
 
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="Auto"/>
-				</Grid.RowDefinitions>
+				<!-- Add button full width and pink -->
 
-				<TextBlock Grid.Row="0"
-						   Text="Add Task"
-						   FontSize="20"
-						   FontWeight="Bold"
-						   Margin="0,-22,0,42"/>
-
-				<TextBlock Text="Title" Margin="0,11,0,21"/>
-				<TextBox x:Name="titlebx" Margin="0,32,0,31" Grid.RowSpan="3"/>
-
-				<TextBlock Text="Description" Margin="0,63,0,0" Grid.RowSpan="2"/>
-				<TextBox Grid.Row="4"
-						 x:Name="descbx"
-						 TextWrapping="Wrap"
-						 AcceptsReturn="True" Margin="0,10,5,24"/>
-
-				<StackPanel Grid.Row="5"
-							Margin="0 15 0 15">
-					<DatePicker x:Name="datebx"/>
-
-					<TextBlock Text="Priority"
-							   Margin="0 10 0 0"/>
-					<ComboBox x:Name="prioritybx"/>
-				</StackPanel>
-
-				<Button Grid.Row="6"
-						x:Name="addbtn"
-						Content="Add Task"
-						Height="40"
-						Click="addbtn_Click"/>
-				<TextBlock Text="Due Date" Margin="-2,52,2,131" Grid.RowSpan="2" Grid.Row="4"/>
-			</Grid>
+				<StackPanel x:Name="taskDetailsPanel" Margin="0,10,0,0"/>
+				<Button x:Name="addbtn" Content="Add Task" Height="35" Background="#E91E63" Foreground="White" Click="addbtn_Click"/>
+			</StackPanel>
 		</Border>
 
-		<!-- 📊 PROGRESS (Bottom Left, Responsive) -->
-		<StackPanel Grid.Row="2"
-					Grid.Column="0"
-					Margin="20"
-					VerticalAlignment="Bottom">
-
-			<TextBlock Text="Progress"
-					   FontWeight="SemiBold"
-					   Margin="0 0 0 8"/>
-
-			<Border Height="18"
-					Background="#F8BBD0"
-					CornerRadius="10">
-
-				<Border x:Name="progressFill"
-						Width="100"
-						Background="#E91E63"
-						CornerRadius="10"/>
+		<!-- Progress Bar -->
+		<StackPanel Grid.Row="2" Grid.Column="0" Margin="0,15,0,0">
+			<TextBlock Text="Progress" FontWeight="SemiBold" Width="58" Height="24"/>
+			<Border Height="16" Background="#F8BBD0" CornerRadius="10" Width="282">
+				<Border x:Name="progressFill" Width="100" Background="#E91E63" CornerRadius="10"/>
 			</Border>
 		</StackPanel>
 
