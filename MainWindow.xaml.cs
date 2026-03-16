@@ -41,35 +41,28 @@ namespace Project
         // Add task
         private void addbtn_Click(object sender, RoutedEventArgs e)
         {
-            if (tasks.Count(t => !t.IsCompleted) >= MaxTasks)
-            {
-                MessageBox.Show("Please finish at least one task to add more.", "Task Limit", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
             if (string.IsNullOrWhiteSpace(titlebx.Text) ||
                 string.IsNullOrWhiteSpace(descbx.Text) ||
                 prioritybx.SelectedItem == null ||
+                categorybx.SelectedItem == null ||
                 datebx.SelectedDate == null)
             {
                 MessageBox.Show("Please fill all fields.");
                 return;
             }
 
-            TaskItem newTask = new TaskItem
+            tasks.Add(new TaskItem
             {
                 Title = titlebx.Text,
                 Description = descbx.Text,
                 Priority = prioritybx.SelectedItem.ToString(),
+                Category = categorybx.SelectedItem.ToString(),
                 DueDate = datebx.SelectedDate.Value,
                 IsCompleted = false
-            };
+            });
 
-            tasks.Add(newTask);
             SaveTasks();
-            ClearInputs();
-            RefreshListView();
-            UpdateProgressBar();
+            UpdateProgress();
         }
 
         // Mark done
