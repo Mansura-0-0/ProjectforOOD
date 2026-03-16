@@ -77,23 +77,15 @@ namespace Project
             }
         }
 
-
         // Delete task
         private void deletebtn_Click(object sender, RoutedEventArgs e)
         {
-            if (taskListView.SelectedItem is TaskItem task)
+            TaskItem task = taskListView.SelectedItem as TaskItem;
+            if (task != null)
             {
                 tasks.Remove(task);
-               
-               taskDetailsPanel.Children.Clear();
-
                 SaveTasks();
-                RefreshListView();
-                UpdateProgressBar();
-            }
-            else
-            {
-                MessageBox.Show("Select a task to delete.");
+                UpdateProgress();
             }
         }
 
