@@ -1,0 +1,20 @@
+﻿<Window x:Class="Project.StatisticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Title="Statistics"
+        Height="300"
+        Width="400">
+
+    <StackPanel Margin="20">
+
+        <TextBlock Text="Task Statistics"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   Margin="0,0,0,20"/>
+
+        <TextBlock x:Name="totalTasks"/>
+        <TextBlock x:Name="completedTasks"/>
+        <TextBlock x:Name="overdueTasks"/>
+
+    </StackPanel>
+
+</Window>

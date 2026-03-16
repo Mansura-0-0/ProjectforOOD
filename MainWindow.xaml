@@ -6,230 +6,192 @@
         Width="950"
         Background="#FCE4EC">
 
-	<Window.Resources>
+    <Window.Resources>
 
-		<!-- Pink Button Style -->
-		<Style TargetType="Button">
-			<Setter Property="Background" Value="#E91E63"/>
-			<Setter Property="Foreground" Value="White"/>
-			<Setter Property="FontWeight" Value="SemiBold"/>
-			<Setter Property="Margin" Value="5"/>
-			<Setter Property="Padding" Value="8,4"/>
-			<Setter Property="Cursor" Value="Hand"/>
-		</Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#E91E63"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
 
-	</Window.Resources>
-    <!--<Viewbox Stretch="Uniform">-->
-	<Grid Margin="10">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-		
-		
-          
-                <!-- Header -->
-		<Border Grid.Row="0"
-		Background="#E91E63"
-		Padding="20"
-		CornerRadius="0,0,15,15"
-		Margin="0,0,0,10">
-			<StackPanel>
-				<TextBlock Text="✨ Task Guru ✨"
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="#E91E63"
+                Padding="20"
+                CornerRadius="0,0,15,15"
+                Margin="0,0,0,10">
+
+            <StackPanel>
+                <TextBlock Text="✨ Task Guru ✨"
                            FontSize="22"
                            FontWeight="Bold"
                            Foreground="White"/>
-				<TextBlock Text="Get Your Sh*t Together"
+                <TextBlock Text="Get Your Sh*t Together"
                            FontSize="14"
                            Foreground="#FCE4EC"/>
-			</StackPanel>
-		</Border>
-                <!-- Main Content -->
-		<Grid Grid.Row="1">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="2*"/>
-				<ColumnDefinition Width="3*"/>
-			</Grid.ColumnDefinitions>
+            </StackPanel>
+        </Border>
 
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
 
-			<!-- LEFT PANEL -->
-			<Border Grid.Column="0"
+            <Border Grid.Column="0"
                     Background="White"
                     CornerRadius="15"
                     Padding="15"
                     Margin="0,0,10,0">
 
-				<DockPanel LastChildFill="True">
+                <DockPanel LastChildFill="True">
 
-					<!-- TOP -->
-					<StackPanel DockPanel.Dock="Top">
-						<TextBlock Text="Task List"
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock Text="Task List"
                                    FontSize="20"
                                    FontWeight="Bold"
                                    Margin="0,0,0,10"/>
 
-						<TextBox x:Name="searchbx"
+                        <TextBox x:Name="searchbx"
                                  Height="30"
                                  Text="Search tasks..."
                                  Foreground="Gray"
                                  GotFocus="Searchbx_GotFocus"
                                  LostFocus="Searchbx_LostFocus"
                                  TextChanged="Searchbx_TextChanged"/>
-					</StackPanel>
+                    </StackPanel>
 
-					<!-- BOTTOM BUTTONS -->
-					<StackPanel DockPanel.Dock="Bottom"
+                    <StackPanel DockPanel.Dock="Bottom"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 Margin="0,15,0,0"
                                 Height="50">
 
-						<Button x:Name="alltaskbtn"
+                        <Button x:Name="alltaskbtn"
                                 Width="100"
                                 Height="35"
                                 Click="alltaskbtn_Click">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="📋" Margin="0,0,5,0"/>
-								<TextBlock Text="All"/>
-							</StackPanel>
-						</Button>
+                            <TextBlock Text="📋 All"/>
+                        </Button>
 
-						<Button x:Name="donebtn"
+                        <Button x:Name="donebtn"
                                 Width="100"
                                 Height="35"
                                 Click="donebtn_Click">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="✅" Margin="0,0,5,0"/>
-								<TextBlock Text="Done"/>
-							</StackPanel>
-						</Button>
+                            <TextBlock Text="✅ Done"/>
+                        </Button>
 
-						<Button x:Name="deletebtn"
+                        <Button x:Name="deletebtn"
                                 Width="100"
                                 Height="35"
                                 Click="deletebtn_Click">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="🗑" Margin="0,0,5,0"/>
-								<TextBlock Text="Delete"/>
-							</StackPanel>
-						</Button>
-					</StackPanel>
+                            <TextBlock Text="🗑 Delete"/>
+                        </Button>
 
-					<!-- LISTVIEW (fills space) -->
-					<ListView x:Name="taskListView"
+                    </StackPanel>
+
+                    <ListView x:Name="taskListView"
                               SelectionChanged="taskListView_SelectionChanged">
 
-						<ListView.ItemTemplate>
-							<DataTemplate>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
 
-								<Border Padding="10"
+                                <Border Padding="10"
                                         Margin="5"
                                         CornerRadius="10"
                                         BorderBrush="#F8BBD0"
                                         BorderThickness="1">
 
-									<StackPanel>
+                                    <StackPanel>
 
-										<!-- Title -->
-										<TextBlock Text="{Binding Title}"
+                                        <TextBlock Text="{Binding Title}"
                                                    FontSize="15"
-                                                   FontWeight="Bold">
-											<TextBlock.Style>
-												<Style TargetType="TextBlock">
-													<Style.Triggers>
-														<DataTrigger Binding="{Binding IsCompleted}" Value="True">
-															<Setter Property="TextDecorations" Value="Strikethrough"/>
-														</DataTrigger>
-													</Style.Triggers>
-												</Style>
-											</TextBlock.Style>
-										</TextBlock>
+                                                   FontWeight="Bold"/>
 
-										<!-- Description -->
-										<TextBlock Text="{Binding Description}"
+                                        <TextBlock Text="{Binding Description}"
                                                    TextWrapping="Wrap"
-                                                   FontSize="12"
-                                                   Margin="0,3,0,0"/>
+                                                   FontSize="12"/>
 
-										<!-- Info Row -->
-										<StackPanel Orientation="Horizontal"
-                                                    Margin="0,5,0,0">
+                                        <StackPanel Orientation="Horizontal">
 
-											<TextBlock Text="📅 " FontSize="11"/>
-											<TextBlock Text="{Binding DueDate, StringFormat=Due: {0:d}}"
-                                                       FontSize="11"
-                                                       Margin="0,0,10,0"/>
+                                            <TextBlock Text="📅 "/>
+                                            <TextBlock Text="{Binding DueDate, StringFormat=Due: {0:d}}"/>
 
-											<TextBlock Text="⭐ " FontSize="11"/>
-											<TextBlock Text="{Binding Priority}"
-                                                       FontSize="11"
-                                                       Margin="0,0,10,0"/>
+                                            <TextBlock Text=" ⭐ "/>
+                                            <TextBlock Text="{Binding Priority}"/>
 
-											<TextBlock Text="🏷 " FontSize="11"/>
-											<TextBlock Text="{Binding Category}"
-                                                       FontSize="11"/>
+                                            <TextBlock Text=" 🏷 "/>
+                                            <TextBlock Text="{Binding Category}"/>
 
-										</StackPanel>
+                                        </StackPanel>
 
-									</StackPanel>
+                                    </StackPanel>
 
-								</Border>
+                                </Border>
 
-							</DataTemplate>
-						</ListView.ItemTemplate>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
 
-					</ListView>
+                    </ListView>
 
-				</DockPanel>
-			</Border>
+                </DockPanel>
+            </Border>
 
-			<!-- RIGHT PANEL -->
-			<Border Grid.Column="1"
+            <Border Grid.Column="1"
                     Background="White"
                     CornerRadius="15"
                     Padding="20">
 
-				<StackPanel>
-					<TextBlock Text="Add Task"
+                <StackPanel>
+                    <TextBlock Text="Add Task"
                                FontSize="20"
                                FontWeight="Bold"
                                Margin="0,0,0,15"/>
 
-					<TextBlock Text="Title"/>
-					<TextBox x:Name="titlebx"/>
+                    <TextBlock Text="Title"/>
+                    <TextBox x:Name="titlebx"/>
 
-					<TextBlock Text="Description"/>
-					<TextBox x:Name="descbx"
+                    <TextBlock Text="Description"/>
+                    <TextBox x:Name="descbx"
                              AcceptsReturn="True"
                              Height="80"/>
 
-					<TextBlock Text="Due Date"/>
-					<DatePicker x:Name="datebx"/>
+                    <TextBlock Text="Due Date"/>
+                    <DatePicker x:Name="datebx"/>
 
-					<TextBlock Text="Priority"/>
-					<ComboBox x:Name="prioritybx"/>
+                    <TextBlock Text="Priority"/>
+                    <ComboBox x:Name="prioritybx"/>
 
-					<TextBlock Text="Category"/>
-					<ComboBox x:Name="categorybx"/>
+                    <TextBlock Text="Category"/>
+                    <ComboBox x:Name="categorybx"/>
 
-					<Button x:Name="addbtn"
+                    <Button x:Name="addbtn"
                             Content="➕ Add Task"
                             Height="35"
                             Click="addbtn_Click"/>
-				</StackPanel>
-			</Border>
+                </StackPanel>
+            </Border>
 
-		</Grid>
+        </Grid>
 
-		<!-- PROGRESS -->
-		<StackPanel Grid.Row="2" Margin="0,15,0,0">
-			<TextBlock Text="Progress" FontWeight="SemiBold"/>
-			<ProgressBar x:Name="progressBar"
+        <StackPanel Grid.Row="2" Margin="0,15,0,0">
+            <TextBlock Text="Progress" FontWeight="SemiBold"/>
+            <ProgressBar x:Name="progressBar"
                          Height="18"
                          Minimum="0"
                          Maximum="100"/>
-		</StackPanel>
+        </StackPanel>
 
-	</Grid>
+    </Grid>
 </Window>
