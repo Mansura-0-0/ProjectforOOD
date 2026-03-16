@@ -20,16 +20,35 @@
 
 	</Window.Resources>
     <!--<Viewbox Stretch="Uniform">-->
-        <Grid Background="#FCE4EC" Margin="10">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		
+		
+          
                 <!-- Header -->
-                <RowDefinition Height="*"/>
+		<Border Grid.Row="0"
+		Background="#E91E63"
+		Padding="20"
+		CornerRadius="0,0,15,15"
+		Margin="0,0,0,10">
+			<StackPanel>
+				<TextBlock Text="✨ Task Guru ✨"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="White"/>
+				<TextBlock Text="Get Your Sh*t Together"
+                           FontSize="14"
+                           Foreground="#FCE4EC"/>
+			</StackPanel>
+		</Border>
                 <!-- Main Content -->
                 <RowDefinition Height="Auto" MinHeight="55.96"/>
                 <!-- Progress -->
-            </Grid.RowDefinitions>
+           
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
