@@ -8,14 +8,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-
 namespace Project
 {
     public partial class MainWindow : Window
     {
-        private ObservableCollection<TaskItem> tasks;
-        private const int MaxTasks = 5;
-        private readonly string jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tasks.json");
+        //declare max tasks constant
+        private ObservableCollection<TaskItem> tasks = new ObservableCollection<TaskItem>();
+        private string jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tasks.json");
+        private ICollectionView tasksView;
 
         public MainWindow()
         {
