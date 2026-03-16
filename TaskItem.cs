@@ -2,7 +2,7 @@
 
 namespace Project
 {
-    public class TaskItem : ITask
+    public class TaskItem
     {
         public int Id { get; set; }
 
@@ -17,10 +17,5 @@ namespace Project
         public DateTime DueDate { get; set; }
 
         public bool IsCompleted { get; set; }
-
-        public bool IsOverdue()
-        {
-            return DateTime.Now > DueDate && !IsCompleted;
-        }
     }
 }

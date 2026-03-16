@@ -5,20 +5,21 @@ namespace Project
 {
     public partial class StatisticsWindow : Window
     {
+        Database db = new Database();
+
         public StatisticsWindow()
         {
             InitializeComponent();
 
-            using (TaskDbContext db = new TaskDbContext())
-            {
-                int total = db.Tasks.Count();
-                int completed = db.Tasks.Count(t => t.IsCompleted);
-                int overdue = db.Tasks.Count(t => !t.IsCompleted && t.DueDate < System.DateTime.Now);
+            var tasks = db.GetTasks();
 
-                totalTasks.Text = "Total Tasks: " + total;
-                completedTasks.Text = "Completed Tasks: " + completed;
-                overdueTasks.Text = "Overdue Tasks: " + overdue;
-            }
+            int total = tasks.Count;
+            int completed = tasks.Count(t => t.IsCompleted);
+            int overdue = tasks.Count(t => !t.IsCompleted && t.DueDate < System.DateTime.Now);
+
+            totalTasks.Text = "Total Tasks: " + total;
+            completedTasks.Text = "Completed Tasks: " + completed;
+            overdueTasks.Text = "Overdue Tasks: " + overdue;
         }
     }
 }

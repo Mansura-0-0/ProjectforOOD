@@ -10,117 +10,87 @@ namespace Project
 {
     public partial class MainWindow : Window
     {
-        private ObservableCollection<TaskItem> tasks;
+        private ObservableCollection<TaskItem> tasks = new ObservableCollection<TaskItem>();
         private ICollectionView tasksView;
 
-        private TaskDbContext db = new TaskDbContext();
+        private Database db = new Database();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            try
-            {
-                db.Database.CreateIfNotExists();
+            db.Initialize();
 
-                tasks = new ObservableCollection<TaskItem>(db.Tasks.ToList());
+            tasks = new ObservableCollection<TaskItem>(db.GetTasks());
 
-                taskListView.ItemsSource = tasks;
+            taskListView.ItemsSource = tasks;
 
-                prioritybx.ItemsSource = new[] { "Low", "Medium", "High" };
-                categorybx.ItemsSource = new[] { "School", "Work", "Home", "Personal" };
+            prioritybx.ItemsSource = new[] { "Low", "Medium", "High" };
+            categorybx.ItemsSource = new[] { "School", "Work", "Home", "Personal" };
 
-                tasksView = CollectionViewSource.GetDefaultView(taskListView.ItemsSource);
+            tasksView = CollectionViewSource.GetDefaultView(taskListView.ItemsSource);
 
-                UpdateProgress();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading tasks: " + ex.Message);
-            }
+            UpdateProgress();
         }
 
         private void addbtn_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (string.IsNullOrWhiteSpace(titlebx.Text) ||
+                string.IsNullOrWhiteSpace(descbx.Text) ||
+                prioritybx.SelectedItem == null ||
+                categorybx.SelectedItem == null ||
+                datebx.SelectedDate == null)
             {
-                if (string.IsNullOrWhiteSpace(titlebx.Text) ||
-                    string.IsNullOrWhiteSpace(descbx.Text) ||
-                    prioritybx.SelectedItem == null ||
-                    categorybx.SelectedItem == null ||
-                    datebx.SelectedDate == null)
-                {
-                    MessageBox.Show("Please fill all fields.");
-                    return;
-                }
-
-                TaskItem newTask = new TaskItem
-                {
-                    Title = titlebx.Text,
-                    Description = descbx.Text,
-                    Priority = prioritybx.SelectedItem.ToString(),
-                    Category = categorybx.SelectedItem.ToString(),
-                    DueDate = datebx.SelectedDate.Value,
-                    IsCompleted = false
-                };
-
-                db.Tasks.Add(newTask);
-                db.SaveChanges();
-
-                tasks.Add(newTask);
-
-                ClearInputs();
-
-                UpdateProgress();
+                MessageBox.Show("Please fill all fields.");
+                return;
             }
-            catch (Exception ex)
+
+            TaskItem newTask = new TaskItem
             {
-                MessageBox.Show("Error adding task: " + ex.Message);
-            }
+                Title = titlebx.Text,
+                Description = descbx.Text,
+                Priority = prioritybx.SelectedItem.ToString(),
+                Category = categorybx.SelectedItem.ToString(),
+                DueDate = datebx.SelectedDate.Value,
+                IsCompleted = false
+            };
+
+            db.AddTask(newTask);
+
+            tasks.Add(newTask);
+
+            ClearInputs();
+
+            UpdateProgress();
         }
 
         private void donebtn_Click(object sender, RoutedEventArgs e)
         {
-            try
+            TaskItem task = taskListView.SelectedItem as TaskItem;
+
+            if (task != null)
             {
-                TaskItem task = taskListView.SelectedItem as TaskItem;
+                task.IsCompleted = true;
 
-                if (task != null)
-                {
-                    task.IsCompleted = true;
+                db.CompleteTask(task.Id);
 
-                    db.SaveChanges();
+                taskListView.Items.Refresh();
 
-                    taskListView.Items.Refresh();
-
-                    UpdateProgress();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error completing task: " + ex.Message);
+                UpdateProgress();
             }
         }
 
         private void deletebtn_Click(object sender, RoutedEventArgs e)
         {
-            try
+            TaskItem task = taskListView.SelectedItem as TaskItem;
+
+            if (task != null)
             {
-                TaskItem task = taskListView.SelectedItem as TaskItem;
+                db.DeleteTask(task.Id);
 
-                if (task != null)
-                {
-                    db.Tasks.Remove(task);
-                    db.SaveChanges();
+                tasks.Remove(task);
 
-                    tasks.Remove(task);
-
-                    UpdateProgress();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error deleting task: " + ex.Message);
+                UpdateProgress();
             }
         }
 
@@ -134,9 +104,6 @@ namespace Project
             if (tasksView == null) return;
 
             string search = (searchbx.Text ?? "").Trim().ToLower();
-
-            if (search == "search tasks...")
-                search = "";
 
             tasksView.Filter = obj =>
             {
