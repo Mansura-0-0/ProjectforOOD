@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Project
+﻿namespace Project
 {
-    internal class ImportantTask: TaskItem
+    internal class ImportantTask : TaskItem
     {
-        
-        
-            public string Category { get; set; }
-        
+        public string ExtraNotes { get; set; }
     }
 }
