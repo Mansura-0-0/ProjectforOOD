@@ -52,58 +52,177 @@
 				<ColumnDefinition Width="3*"/>
 			</Grid.ColumnDefinitions>
 
+
+			<!-- LEFT PANEL -->
+			<Border Grid.Column="0"
+                    Background="White"
+                    CornerRadius="15"
+                    Padding="15"
+                    Margin="0,0,10,0">
+
+				<DockPanel LastChildFill="True">
+
+					<!-- TOP -->
+					<StackPanel DockPanel.Dock="Top">
+						<TextBlock Text="Task List"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,10"/>
+
+						<TextBox x:Name="searchbx"
+                                 Height="30"
+                                 Text="Search tasks..."
+                                 Foreground="Gray"
+                                 GotFocus="Searchbx_GotFocus"
+                                 LostFocus="Searchbx_LostFocus"
+                                 TextChanged="Searchbx_TextChanged"/>
+					</StackPanel>
+
+					<!-- BOTTOM BUTTONS -->
+					<StackPanel DockPanel.Dock="Bottom"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Margin="0,15,0,0"
+                                Height="50">
+
+						<Button x:Name="alltaskbtn"
+                                Width="100"
+                                Height="35"
+                                Click="alltaskbtn_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="📋" Margin="0,0,5,0"/>
+								<TextBlock Text="All"/>
+							</StackPanel>
+						</Button>
+
+						<Button x:Name="donebtn"
+                                Width="100"
+                                Height="35"
+                                Click="donebtn_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="✅" Margin="0,0,5,0"/>
+								<TextBlock Text="Done"/>
+							</StackPanel>
+						</Button>
+
+						<Button x:Name="deletebtn"
+                                Width="100"
+                                Height="35"
+                                Click="deletebtn_Click">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="🗑" Margin="0,0,5,0"/>
+								<TextBlock Text="Delete"/>
+							</StackPanel>
+						</Button>
+					</StackPanel>
+
+					<!-- LISTVIEW (fills space) -->
+					<ListView x:Name="taskListView"
+                              SelectionChanged="taskListView_SelectionChanged">
+
+						<ListView.ItemTemplate>
+							<DataTemplate>
+
+								<Border Padding="10"
+                                        Margin="5"
+                                        CornerRadius="10"
+                                        BorderBrush="#F8BBD0"
+                                        BorderThickness="1">
+
+									<StackPanel>
+
+										<!-- Title -->
+										<TextBlock Text="{Binding Title}"
+                                                   FontSize="15"
+                                                   FontWeight="Bold">
+											<TextBlock.Style>
+												<Style TargetType="TextBlock">
+													<Style.Triggers>
+														<DataTrigger Binding="{Binding IsCompleted}" Value="True">
+															<Setter Property="TextDecorations" Value="Strikethrough"/>
+														</DataTrigger>
+													</Style.Triggers>
+												</Style>
+											</TextBlock.Style>
+										</TextBlock>
+
+										<!-- Description -->
+										<TextBlock Text="{Binding Description}"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="12"
+                                                   Margin="0,3,0,0"/>
+
+										<!-- Info Row -->
+										<StackPanel Orientation="Horizontal"
+                                                    Margin="0,5,0,0">
+
+											<TextBlock Text="📅 " FontSize="11"/>
+											<TextBlock Text="{Binding DueDate, StringFormat=Due: {0:d}}"
+                                                       FontSize="11"
+                                                       Margin="0,0,10,0"/>
+
+											<TextBlock Text="⭐ " FontSize="11"/>
+											<TextBlock Text="{Binding Priority}"
+                                                       FontSize="11"
+                                                       Margin="0,0,10,0"/>
+
+											<TextBlock Text="🏷 " FontSize="11"/>
+											<TextBlock Text="{Binding Category}"
+                                                       FontSize="11"/>
+
+										</StackPanel>
+
+									</StackPanel>
+
+								</Border>
+
+							</DataTemplate>
+						</ListView.ItemTemplate>
+
+					</ListView>
+
+				</DockPanel>
+			</Border>
+
+			<!-- RIGHT PANEL -->
+			<Border Grid.Column="1"
+                    Background="White"
+                    CornerRadius="15"
+                    Padding="20">
+
+				<StackPanel>
+					<TextBlock Text="Add Task"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Margin="0,0,0,15"/>
+
+					<TextBlock Text="Title"/>
+					<TextBox x:Name="titlebx"/>
+
+					<TextBlock Text="Description"/>
+					<TextBox x:Name="descbx"
+                             AcceptsReturn="True"
+                             Height="80"/>
+
+					<TextBlock Text="Due Date"/>
+					<DatePicker x:Name="datebx"/>
+
+					<TextBlock Text="Priority"/>
+					<ComboBox x:Name="prioritybx"/>
+
+					<TextBlock Text="Category"/>
+					<ComboBox x:Name="categorybx"/>
+
+					<Button x:Name="addbtn"
+                            Content="➕ Add Task"
+                            Height="35"
+                            Click="addbtn_Click"/>
+				</StackPanel>
+			</Border>
+
+		</Grid>
+
 		
 
-            <!-- Left Panel -->
-            <Border Grid.Column="0" Margin="10,104,0,41" Background="White" CornerRadius="15" Padding="15" Grid.RowSpan="3">
-                <StackPanel Margin="0,0,-5,-5">
-                    <TextBlock Text="Task List" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
-                    <TextBox x:Name="searchbx" Margin="0,0,0,10" Height="28" VerticalContentAlignment="Center" Padding="5"
-                         Foreground="Gray" Text="Search tasks..." GotFocus="Searchbx_GotFocus" LostFocus="Searchbx_LostFocus"/>
-                    <ListView x:Name="taskListView" Height="200" SelectionChanged="taskListView_SelectionChanged" Margin="0,0,0,10" Width="281"/>
-                    <!--task details loader-->
-                    <StackPanel x:Name="taskDetailsPanel" Visibility="Collapsed" Margin="0,0,0,10">
-                        <TextBlock x:Name="detailTitle" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="detailDescription" TextWrapping="Wrap" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="detailDueDate" Margin="0,0,0,5"/>
-                        <TextBlock x:Name="detailPriority" Margin="0,0,0,5"/> </StackPanel>
-
-                    <!-- Buttons with spacing -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" >
-                        <Button x:Name="alltaskbtn" Content="All Tasks" Width="80" Margin="5,0" Click="alltaskbtn_Click" Background="#E91E63" Foreground="White"/>
-                        <Button x:Name="donebtn" Content="Done" Width="80" Margin="5,0" Click="donebtn_Click" Background="#E91E63" Foreground="White"/>
-                        <Button x:Name="deletebtn" Content="Delete" Width="80" Margin="5,0" Click="deletebtn_Click" Background="#E91E63" Foreground="White"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
-            <!-- Right Panel -->
-            <Border Grid.Column="1" Background="White" CornerRadius="15" Padding="20" Margin="10,10,10,28" Grid.RowSpan="3">
-                <StackPanel>
-                    <TextBlock Text="Add Task" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
-                    <TextBlock Text="Title"/>
-                    <TextBox x:Name="titlebx" Margin="0,0,0,10" Height="28" Padding="5"/>
-                    <TextBlock Text="Description"/>
-                    <TextBox x:Name="descbx" AcceptsReturn="True" TextWrapping="Wrap" Height="80" Margin="0,0,0,10" Padding="5"/>
-                    <TextBlock Text="Due Date" Height="27"/>
-                    <DatePicker x:Name="datebx" Margin="0,0,0,10"/>
-                    <TextBlock Text="Priority" Height="26"/>
-                    <ComboBox x:Name="prioritybx" Margin="0,0,0,15" Height="36"/>
-
-                    <!-- Add button full width and pink -->
-
-                    <Button x:Name="addbtn" Content="Add Task" Height="35" Background="#E91E63" Foreground="White" Click="addbtn_Click"/>
-                </StackPanel>
-        </Border>
-
-            <!-- Progress Bar -->
-            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,15,0,0">
-                <TextBlock Text="Progress" FontWeight="SemiBold" Width="58" Height="24"/>
-                <Border Height="16" Background="#F8BBD0" CornerRadius="10" Width="282">
-                    <Border x:Name="progressFill" Width="100" Background="#E91E63" CornerRadius="10"/>
-                </Border>
-            </StackPanel>
-
-        </Grid>
-    
+	</Grid>
 </Window>
