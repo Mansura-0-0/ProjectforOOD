@@ -32,14 +32,19 @@ namespace Project
 
             UpdateProgress();
         }
-
+        // maximum five tasks can be aded to the list unless one is completed or deleted you cant add more tasks to the list
         private void addbtn_Click(object sender, RoutedEventArgs e)
         {
+                if (tasks.Count >= 5)
+                {
+                    MessageBox.Show("Maximum of 5 tasks allowed. Please complete or delete a task before adding a new one.");
+                    return;
+            }
             if (string.IsNullOrWhiteSpace(titlebx.Text) ||
                 string.IsNullOrWhiteSpace(descbx.Text) ||
                 prioritybx.SelectedItem == null ||
                 categorybx.SelectedItem == null ||
-                datebx.SelectedDate == null)
+                datebx.SelectedDate == null )
             {
                 MessageBox.Show("Please fill all fields.");
                 return;
