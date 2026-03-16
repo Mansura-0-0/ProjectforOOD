@@ -85,6 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ImportantTask.cs" />
     <Compile Include="ITask.cs" />
     <Compile Include="TaskItem.cs" />
     <Page Include="MainWindow.xaml">
