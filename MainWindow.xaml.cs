@@ -117,7 +117,9 @@ namespace Project
             if (taskListView.SelectedItem is TaskItem task)
             {
                 tasks.Remove(task);
-                taskDetailsPanel.Children.Clear();
+               
+               taskDetailsPanel.Children.Clear();
+
                 SaveTasks();
                 RefreshListView();
                 UpdateProgressBar();
@@ -129,23 +131,34 @@ namespace Project
         }
 
         // Show task details
+        //this should be showin in task list view $$$$$$$$$
         private void taskListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            taskDetailsPanel.Children.Clear();
-            if (taskListView.SelectedItem is TaskItem task)
+
+
+          
+          
+
+            //but if i want to show in task list view then how can i do that?
+            if (taskListView.SelectedItem is TaskItem selectedTask)
             {
-                taskDetailsPanel.Children.Add(new TextBlock
+                // Update the ListView item to show details
+                int index = taskListView.Items.IndexOf(selectedTask);
+                if (index >= 0)
                 {
-                    Text = $"Title: {task.Title}\n" +
-                           $"Description: {task.Description}\n" +
-                           $"Priority: {task.Priority}\n" +
-                           $"Due: {task.DueDate:d}\n" +
-                           $"Status: {(task.IsCompleted ? "Completed" : "Pending")}",
-                    TextWrapping = TextWrapping.Wrap,
-                    Margin = new Thickness(10)
-                });
+                    ListViewItem item = (ListViewItem)taskListView.ItemContainerGenerator.ContainerFromIndex(index);
+                    if (item != null)
+                    {
+                        item.Content = $"{selectedTask.Title} - {selectedTask.Description} (Due: {selectedTask.DueDate:d}) {selectedTask.Priority}";
+                    }
+                }
             }
+
+
+
+
         }
+
 
         // Search/filter tasks
         private void Searchbx_TextChanged(object sender, TextChangedEventArgs e)
@@ -216,7 +229,7 @@ namespace Project
             }
 
             double percent = tasks.Count(t => t.IsCompleted) / (double)tasks.Count;
-            progressFill.Width = percent * 200; // Adjust width according to XAML
+            progressFill.Width = percent * 200; 
         }
     }
 }
