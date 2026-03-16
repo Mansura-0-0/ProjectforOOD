@@ -222,7 +222,14 @@
 
 		</Grid>
 
-		
+		<!-- PROGRESS -->
+		<StackPanel Grid.Row="2" Margin="0,15,0,0">
+			<TextBlock Text="Progress" FontWeight="SemiBold"/>
+			<ProgressBar x:Name="progressBar"
+                         Height="18"
+                         Minimum="0"
+                         Maximum="100"/>
+		</StackPanel>
 
 	</Grid>
 </Window>
