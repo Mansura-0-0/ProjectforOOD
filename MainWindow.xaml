@@ -52,21 +52,7 @@
 				<ColumnDefinition Width="3*"/>
 			</Grid.ColumnDefinitions>
 
-			<!-- Progress -->
-           
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Header -->
-            <Border Grid.Row="0" Background="#E91E63" Padding="20" CornerRadius="0,0,15,15" Margin="23,0,109,66">
-                <StackPanel>
-                    <TextBlock Text="✨ Task Guru ✨" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                    <TextBlock Text="Get Your Sh*t Together" FontSize="14" Foreground="#FCE4EC"/>
-                </StackPanel>
-            </Border>
+		
 
             <!-- Left Panel -->
             <Border Grid.Column="0" Margin="10,104,0,41" Background="White" CornerRadius="15" Padding="15" Grid.RowSpan="3">
