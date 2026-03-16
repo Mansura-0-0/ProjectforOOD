@@ -68,18 +68,15 @@ namespace Project
         // Mark done
         private void donebtn_Click(object sender, RoutedEventArgs e)
         {
-            if (taskListView.SelectedItem is TaskItem task)
+            TaskItem task = taskListView.SelectedItem as TaskItem;
+            if (task != null)
             {
                 task.IsCompleted = true;
-                RefreshListView();
+                UpdateProgress();
                 SaveTasks();
-                UpdateProgressBar();
-            }
-            else
-            {
-                MessageBox.Show("Select a task first.");
             }
         }
+
 
         // Delete task
         private void deletebtn_Click(object sender, RoutedEventArgs e)
