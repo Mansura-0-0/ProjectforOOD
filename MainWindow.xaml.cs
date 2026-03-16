@@ -21,26 +21,7 @@ namespace Project
         {
             InitializeComponent();
 
-            if (!DesignerProperties.GetIsInDesignMode(this))
-            {
-                // Load tasks from JSON
-                tasks = LoadTasks();
-
-                // Bind ListView
-                taskListView.ItemsSource = tasks;
-
-                // Populate priority ComboBox
-                prioritybx.ItemsSource = new[] { "Low", "Medium", "High" };
-
-                // Connect events
-                taskListView.SelectionChanged += taskListView_SelectionChanged;
-                searchbx.TextChanged += Searchbx_TextChanged;
-                searchbx.GotFocus += Searchbx_GotFocus;
-                searchbx.LostFocus += Searchbx_LostFocus;
-
-                // Update progress bar initially
-                UpdateProgressBar();
-            }
+            
         }
 
         private void Searchbx_GotFocus(object sender, RoutedEventArgs e)
@@ -202,34 +183,30 @@ namespace Project
             }
         }
 
-        private void SaveTasks()
+      
+        
+            private void SaveTasks()
         {
-            try
-            {
-                string json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(jsonPath, json);
-            }
-            catch
-            {
-                MessageBox.Show("Error saving tasks.");
-            }
+            string json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(jsonPath, json);
         }
+        
 
         private void RefreshListView()
         {
             taskListView.Items.Refresh();
         }
 
-        private void UpdateProgressBar()
+        private void UpdateProgress()
         {
             if (tasks.Count == 0)
             {
-                progressFill.Width = 0;
+                progressBar.Value = 0;
                 return;
             }
 
-            double percent = tasks.Count(t => t.IsCompleted) / (double)tasks.Count;
-            progressFill.Width = percent * 200; 
+            double percent = tasks.Count(t => t.IsCompleted) * 100.0 / tasks.Count;
+            progressBar.Value = percent;
         }
     }
 }
