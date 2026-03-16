@@ -35,10 +35,12 @@ namespace Project
         // maximum five tasks can be aded to the list unless one is completed or deleted you cant add more tasks to the list
         private void addbtn_Click(object sender, RoutedEventArgs e)
         {
-                if (tasks.Count >= 5)
-                {
-                    MessageBox.Show("Maximum of 5 tasks allowed. Please complete or delete a task before adding a new one.");
-                    return;
+            int activeTasks = tasks.Count(t => !t.IsCompleted);
+
+            if (activeTasks >= 5)
+            {
+                MessageBox.Show("Maximum of 5 active tasks allowed. Complete or delete a task before adding another.");
+                return;
             }
             if (string.IsNullOrWhiteSpace(titlebx.Text) ||
                 string.IsNullOrWhiteSpace(descbx.Text) ||
@@ -63,6 +65,7 @@ namespace Project
             db.AddTask(newTask);
 
             tasks.Add(newTask);
+            SortTasks();
 
             ClearInputs();
 
@@ -80,6 +83,7 @@ namespace Project
                 db.CompleteTask(task.Id);
 
                 taskListView.Items.Refresh();
+                SortTasks();
 
                 UpdateProgress();
             }
@@ -158,6 +162,19 @@ namespace Project
             double percent = tasks.Count(t => t.IsCompleted) * 100.0 / tasks.Count;
 
             progressBar.Value = percent;
+        }
+        private void SortTasks()
+        {
+            var sorted = tasks
+                .OrderBy(t => t.Priority == "Low")
+                .ThenBy(t => t.Priority == "Medium")
+                .ThenBy(t => t.Priority == "High" ? 0 : 1)
+                .ToList();
+
+            tasks.Clear();
+
+            foreach (var task in sorted)
+                tasks.Add(task);
         }
     }
 }
