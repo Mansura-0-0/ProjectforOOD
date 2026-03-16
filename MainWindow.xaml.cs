@@ -24,23 +24,19 @@ namespace Project
             
         }
 
+        //serchbox focus events
         private void Searchbx_GotFocus(object sender, RoutedEventArgs e)
         {
             if (searchbx.Text == "Search tasks...")
-            {
                 searchbx.Text = "";
-                searchbx.Foreground = System.Windows.Media.Brushes.Black;
-            }
         }
 
         private void Searchbx_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(searchbx.Text))
-            {
                 searchbx.Text = "Search tasks...";
-                searchbx.Foreground = System.Windows.Media.Brushes.Gray;
-            }
         }
+
 
         // Add task
         private void addbtn_Click(object sender, RoutedEventArgs e)
@@ -152,10 +148,11 @@ namespace Project
                 return false;
             };
         }
-
+        //updated
         private void alltaskbtn_Click(object sender, RoutedEventArgs e)
         {
-            CollectionViewSource.GetDefaultView(taskListView.ItemsSource).Filter = null;
+            if (tasksView == null) return;
+            tasksView.Filter = null;
         }
 
         private void ClearInputs()
@@ -166,26 +163,20 @@ namespace Project
             datebx.SelectedDate = null;
         }
 
+
+        //updated
         private ObservableCollection<TaskItem> LoadTasks()
         {
             if (!File.Exists(jsonPath))
                 return new ObservableCollection<TaskItem>();
 
-            try
-            {
-                string json = File.ReadAllText(jsonPath);
-                return JsonSerializer.Deserialize<ObservableCollection<TaskItem>>(json) ?? new ObservableCollection<TaskItem>();
-            }
-            catch
-            {
-                MessageBox.Show("Error reading tasks.json, starting fresh.");
-                return new ObservableCollection<TaskItem>();
-            }
+            string json = File.ReadAllText(jsonPath);
+            return JsonSerializer.Deserialize<ObservableCollection<TaskItem>>(json);
         }
 
-      
-        
-            private void SaveTasks()
+
+        //updated
+        private void SaveTasks()
         {
             string json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(jsonPath, json);
@@ -196,7 +187,7 @@ namespace Project
         {
             taskListView.Items.Refresh();
         }
-
+        //updated
         private void UpdateProgress()
         {
             if (tasks.Count == 0)
