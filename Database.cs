@@ -77,17 +77,18 @@ namespace Project
                 @"
                 INSERT INTO Tasks 
                 (Title,Description,Priority,Category,DueDate,IsCompleted)
-                VALUES (@title,@desc,@priority,@category,@date,@done)
+                VALUES (@title,@desc,@priority,@category,@date,@done);
+                SELECT last_insert_rowid();
                 ";
 
                 command.Parameters.AddWithValue("@title", task.Title);
                 command.Parameters.AddWithValue("@desc", task.Description);
                 command.Parameters.AddWithValue("@priority", task.Priority);
                 command.Parameters.AddWithValue("@category", task.Category);
-                command.Parameters.AddWithValue("@date", task.DueDate.ToString());
+                command.Parameters.AddWithValue("@date", task.DueDate.ToString("yyyy-MM-dd HH:mm:ss"));
                 command.Parameters.AddWithValue("@done", task.IsCompleted ? 1 : 0);
 
-                command.ExecuteNonQuery();
+                task.Id = Convert.ToInt32(command.ExecuteScalar());
             }
         }
 
