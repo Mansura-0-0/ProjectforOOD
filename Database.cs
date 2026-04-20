@@ -6,12 +6,15 @@ namespace Project
 {
     public class Database
     {
+        // the connection string for the database
         private string connectionString = "Data Source=tasks.db";
 
         public void Initialize()
         {
+            //this method is call at the start of the program to create the database file and the tasks table if they don't exist
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
+                
                 connection.Open();
 
                 SQLiteCommand command = connection.CreateCommand();
@@ -32,11 +35,12 @@ namespace Project
                 command.ExecuteNonQuery();
             }
         }
+        // method 
 
         public List<TaskItem> GetTasks()
         {
             List<TaskItem> tasks = new List<TaskItem>();
-
+            // method to get all the tasks from the database 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
@@ -46,6 +50,7 @@ namespace Project
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
+                    //reading each row 
                     while (reader.Read())
                     {
                         tasks.Add(new TaskItem
@@ -67,6 +72,7 @@ namespace Project
 
         public void AddTask(TaskItem task)
         {
+            //method to add new tassk
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
@@ -94,6 +100,7 @@ namespace Project
 
         public void DeleteTask(int id)
         {
+            //method to delete task 
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
@@ -107,7 +114,7 @@ namespace Project
         }
 
         public void CompleteTask(int id)
-        {
+        {//method to mark task as completed
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();

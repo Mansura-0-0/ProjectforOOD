@@ -12,13 +12,14 @@ namespace Project
     {
         private ObservableCollection<TaskItem> tasks = new ObservableCollection<TaskItem>();
         private ICollectionView tasksView;
-
+        //calling the database 
         private Database db = new Database();
 
         public MainWindow()
         {
+           
             InitializeComponent();
-
+            // Initialize the database and loading tasks
             db.Initialize();
 
             tasks = new ObservableCollection<TaskItem>(db.GetTasks());
@@ -29,12 +30,13 @@ namespace Project
             categorybx.ItemsSource = new[] { "School", "Work", "Home", "Personal" };
 
             tasksView = CollectionViewSource.GetDefaultView(taskListView.ItemsSource);
-
+            //updatig progress
             UpdateProgress();
         }
         // maximum five tasks can be aded to the list unless one is completed or deleted you cant add more tasks to the list
         private void addbtn_Click(object sender, RoutedEventArgs e)
         {
+            // Check for maximun active tasks
             int activeTasks = tasks.Count(t => !t.IsCompleted);
 
             if (activeTasks >= 5)
@@ -71,6 +73,7 @@ namespace Project
 
             UpdateProgress();
         }
+        // Marking a task as completed and refreshing the list to show changes
 
         private void donebtn_Click(object sender, RoutedEventArgs e)
         {
@@ -88,6 +91,7 @@ namespace Project
                 UpdateProgress();
             }
         }
+        // Deleting a task from the list and database, then refreshing the list to show change
 
         private void deletebtn_Click(object sender, RoutedEventArgs e)
         {
@@ -102,12 +106,12 @@ namespace Project
                 UpdateProgress();
             }
         }
-
+        // Filtering the list to show only complete taskss
         private void alltaskbtn_Click(object sender, RoutedEventArgs e)
         {
             tasksView.Filter = null;
         }
-
+        //search for tasks by title, description or category and showing only the matching results in the lisst
         private void Searchbx_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (tasksView == null) return;
@@ -125,22 +129,25 @@ namespace Project
                        (t.Category ?? "").ToLower().Contains(search);
             };
         }
-
+        //clear aearching box
         private void Searchbx_GotFocus(object sender, RoutedEventArgs e)
         {
             if (searchbx.Text == "Search tasks...")
                 searchbx.Text = "";
         }
+        //if the search box is empty , placeholder text
 
         private void Searchbx_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(searchbx.Text))
                 searchbx.Text = "Search tasks...";
         }
+        
 
         private void taskListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
+        //clear all input fields after ading a task
 
         private void ClearInputs()
         {
@@ -151,6 +158,7 @@ namespace Project
             datebx.SelectedDate = null;
         }
 
+        // Update the progress bar based on the parcantage of completed tasks
         private void UpdateProgress()
         {
             if (tasks.Count == 0)
@@ -163,6 +171,7 @@ namespace Project
 
             progressBar.Value = percent;
         }
+        // Sort the tasks by priority and then by completion status 
         private void SortTasks()
         {
             var sorted = tasks
